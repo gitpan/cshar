@@ -1,0 +1,58 @@
+.TH SHELL 1L
+''' $Id: shell.man,v 3.0.3.3 1993/08/25 17:05:00 ram Exp $
+'''
+''' $Log: shell.man,v $
+''' Revision 3.0.3.3  1993/08/25  17:05:00  ram
+''' patch12: cleanup checkin for RCS 5.6
+'''
+''' Revision 3.0.3.2  91/04/07  18:51:54  ram
+''' patch1: merged official cshar 3.0 into beta version
+''' 
+''' Revision 3.0.3.1  91/01/21  11:38:20  ram
+''' 3.0 baseline (ram).
+''' 
+'''
+.SH NAME
+shell \- Interpreter for shell archives
+.SH SYNOPSIS
+.RS
+.na
+.ti -.5i
+.B shell
+[
+.B \-v
+] [ file [parameters] ]
+.ad
+.RE
+.SH DESCRIPTION
+This program interprets enough
+.IR /bin/sh (1)
+syntax, and common command usage, to enable it to unpack many different
+types of
+.\" NOSTRICT "Unmatched .SM"
+.SM UNIX
+shell archives,
+or ``shar's.''
+It is primarily intended to be used on non-UNIX systems that need to
+unpack such archives.
+.PP
+.I Shell
+does
+.B some
+security checking, but to believe that it will protect against all
+trojan horses is probably naive.
+.PP
+The program's parser is line-based, where lines are then split into
+tokens; it is not a true token-based parser.
+In general, it is best if all
+.I /bin/sh
+keywords that can appear alone on a line do so, and that compound
+commands (i.e., using a semi-colon) be avoided.
+For more details on the syntax, see the source (sorry...).
+.PP
+The ``\-v'' option prints out the current version and exits.
+.SH BUGS
+It is probably easier to write a true portable replacement for /bin/sh
+than it is to write something which understands all shar formats.
+.SH SEE ALSO
+shar(1L).

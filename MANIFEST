@@ -1,0 +1,55 @@
+README                     	Acknowledgements, installation notes
+MANIFEST                   	This shipping list
+Configure                   Portability tool.
+Makefile.SH                	Control file for Unix make program
+Makefile.salz              	Original Makefile from Rich Salz
+config.3b1                 	Configuration for 3B1 machine
+config.5r3                 	Configuration for System V rel 3.1 and 3.2
+config.bsd                 	Configuration for BSD/Ultrix/Sun
+config.dos                 	Configuration for MS-DOS (Microsoft C5.1)
+config.hpx                 	Configuration for HP-UX 9000/300 9000/500
+config.vms                 	Configuration for VMS
+config.x38                  Configuration for Xenix on a 386
+config_h.SH                 Produces config.h
+confmagic.h                 Magic symbol remapping
+dirami.c                   	A partial Amiga readdir package
+dirami.h                   	An <ndir.h> file for the Amiga
+dirmsd.c                   	An MS-DOS readdir package
+dirmsd.h                   	An <ndir.h> file for MS-DOS
+dirvms.c                   	A VMS readdir package
+dirvms.h                   	An <ndir.h> file for VMS
+dodoc.sh                   	Create formatted manpages
+findsrc.c                  	Find source files, based on filename
+findsrc.man                	Manual page for findsrc
+glue.c                     	Glue that so unshar uses my /bin/sh parser
+lcwd.c                     	Routines to find current directory
+lexec.c                    	Fork, exec, system, signal, etc., routines
+lfiles.c                   	File size and type routines
+lhost.c                    	Find our machine name
+llib.c                     	Stuff that should be in your C library
+lmem.c                     	Memory allocator, uses calloc
+luser.c                    	Get user's name
+makekit.c                  	Partition files into reasonable-sized kits
+makekit.man                	Manual page for makekit
+manipull.c                 	Pull entries from a manifest
+manipull.man               	Manual page for manipull
+maniscan.c                 	Scan manifests for big or binary files
+maniscan.man               	Manual page for maniscan
+parser.c                   	Interpreter for shell archives
+parser.h                   	Header file for archive interpreter
+patchlevel.h                Current patch level
+patchlog.h                 	Mistake recorder
+ramconf.h                   For those who use Configure
+shar.c                     	Create script to create files
+shar.h                     	Header file, used by everyone
+shar.man                   	Manual page for makekit
+shell.c                    	Main routine for my shell interpreter
+shell.man                  	Manual page for shell
+unshar.c                   	Strip news, notes, mail headers from shar's
+unshar.man                 	Manual page for unshar
+uudecode.c                 	Printable->binary converter
+uudecode.man               	Manual page for uudecode
+uuencode.c                 	Binary->printable converter
+uuencode.man               	Manual page for uuencode
+uuenmain.c                 	Driver for uuencode program
+wildmat.c                  	Shell wildcard pattern matcher

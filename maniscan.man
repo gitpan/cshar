@@ -1,0 +1,216 @@
+.TH MANISCAN 1L
+''' $Id: maniscan.man,v 3.0.3.4 1993/08/25 17:04:52 ram Exp $
+'''
+''' $Log: maniscan.man,v $
+''' Revision 3.0.3.4  1993/08/25  17:04:52  ram
+''' patch12: cleanup checkin for RCS 5.6
+'''
+''' Revision 3.0.3.3  91/04/19  10:19:46  ram
+''' patch5: added BUGS section for maniscan
+''' 
+''' Revision 3.0.3.2  91/04/07  18:51:20  ram
+''' patch1: merged official cshar 3.0 into beta version
+''' 
+''' Revision 3.0.3.1  91/01/21  11:35:07  ram
+''' 3.0 baseline (ram).
+''' 
+'''
+.SH NAME
+maniscan \- scan a manifest for large or binary files
+.SH SYNOPSIS
+.RS
+.na
+.ti -.5i
+.B maniscan
+[
+.B \-e
+] [
+.BI \-f\| #
+] [
+.BI \-h\| #
+] [
+.BI \-i\| name
+] [
+.BI \-l\| name
+] [
+.BI \-w\| #
+] [
+.B \-m
+] [
+.BI \-o\| name
+] [
+.BI \-s\| #[k]
+] [
+.BI \-t\| text
+] [
+.BI \-c\| command
+] [
+.B \-v
+]
+.ad
+.RE
+.SH DESCRIPTION
+.I Maniscan
+reads an existing ``manifest'' (usually created by
+.IR findsrc (1L)
+and maintained by
+.IR makekit (1L))
+and scans it for binary files, large files, and files with long
+lines or that contain non-printing characters.
+Large files are automatically split and binary files are run through
+.IR uuencode (1).
+All problems can be recorded in a log file that should be shipped with
+the other sources being prepared.
+.PP
+A manifest consist of some header lines, followed by a series of lines
+that describe the files contained in the shell archives.
+Each line looks like this;
+.RS
+filename\ \ \ spaces\ \ \ optional-digits\ \ \ spaces\ \ \ text
+.RE
+For more information on the interpretation of the file, see the
+.I makekit
+documentation.
+.PP
+The original manifest is read from the standard input.
+An alternate input file may be given by using the ``\-i'' option.
+The generated manifest will be sent to the standard output.
+An alternate output file may be given by using the ``\-o'' option; if
+the output file exists,
+.I maniscan
+will try to rename it with an extension of
+.IR \&.BAK \&.
+.PP
+As it scans the manifest,
+.I maniscan
+can generate a log of the problems it has found so that the recipient
+will know to run
+.IR uudecode (1),
+use
+.IR cat (1)
+to re-create a large file, and so on.
+To create the log file, use the ``\-l'' option to specify the name
+of the file; if the name is ``\-'' the log will go to standard error.
+If any problems are found, the log file will be added to the new
+manifest; use the ``\-e'' option to exclude it.
+.PP
+The log file is written such that it can often be fed directly into a
+Unix shell for execution.
+If a logfile is created, and the ``\-t'' option is used, then the
+text specified with the ``\-t'' flag will be echoed to the user's
+terminal if the logfile is executed.
+This has the same meaning as the ``\-t'' option of
+.IR shar (1L).
+.PP
+The ``\-m'' option is the same as giving the options
+\&``\-iMANIFEST \-oMANIFEST \-h2 \-lPACKNOTES'' and is commonly used when
+reading existing manifests.
+.PP
+After copying any header to the output,
+.I maniscan
+scans each file specified in the manifest.
+If a named file appears to be a binary file (more than a third
+of the first 150 bytes are not printable characters),
+.I maniscan
+will create a
+.IR uuencode (1)'d
+version, update the manifest, and print a log message.
+If the original file is named
+.IR foo.bar ,
+then the new file will be named
+.IR foo.bar.UU .
+.I Maniscan
+next scans for long lines or lines that have non-printable characters in
+them (most commonly ASCII control characters).
+The default line length is 78 characters; this can be changed by using
+the ``\-w'' option; a width of zero skips this check.
+It also checks for lines that end with a space or tab; to suppress this
+check use the ``\-n'' option.
+(Some mailers (like those on BITNET) like to strip trailing spaces, while
+some editors (like GNU Emacs) seem to like to create lines with them;
+use the flag as it is appropriate for you.)
+Each time it finds one of these problems,
+.I maniscan
+will write a log entry.
+.PP
+If a file named in the manifest is too large,
+.I maniscan
+will split it up into pieces.
+The default limit is 50,000 bytes; this may be changed by using
+the ``\-s'' option.
+If the number given with the ``\-s'' option ends with the letter ``k''
+then the size is multiplied by 1024, otherwise it is taken to be the
+desired maximum size in bytes.
+The manifest will be updated to refer to the split pieces, and a log
+entry will be written with instructions to merge the pieces.
+If the original file is named
+.IR foo.bar ,
+then the pieces will be named
+.IR foo.bar.1 ,
+.IR foo.bar.2 ,
+and so on.
+.PP
+The scanning is done in the ``right'' way so that a single large executable
+named
+.I a.out
+would end up being shipped as
+.IR a.out.UU.1 ,
+.I a.out.UU.2
+\&...
+.IR a.out.UU.n .
+In no case does
+.I maniscan
+edit or remove any files mentioned in a manifest (except for the manifest
+itself).
+.PP
+If running on a system where the filenames are of limited length,
+.I maniscan
+will automatically truncate the generated filename to fit inside the
+limit.
+To help ensure portability, the ``\-f'' flag can be used on any system;
+this will limit the length of the generated filenames by truncating
+the base name.
+For example, with ``\-f 14'' specified, the large file
+.I InternalDocumentation
+will be split into pieces named
+.IR InternalDocu01 ,
+and so on.
+Note that the period is omitted.
+.PP
+If a file named in the manifest does not exist,
+.I maniscan
+can try to create it.
+The ``\-c'' option should be given the name of a command to run,
+with a single ``%s'' that will replace the filename.  For example,
+\&``-c "sccs get %s"'' can be used to do a simple checkout of files
+from SCCS.
+The command will be given the full filename as named in the manifest,
+and will be invoked from within the same directory that
+.I maniscan
+was invoked from, so a wrapper script will often be needed to checkout
+items within sub-directories:
+.RS
+.nf
+#! /bin/sh
+DIR=`expr $1 : '\e(.*\e)/.*'`
+if test "X${DIR}" = "X" ; then
+    DIR="/"
+fi
+FILE=`expr $1 : '.*/\e(.*\e)'`
+cd $DIR
+checkout $FILE
+.fi
+.RE
+This option may not be available on all systems.
+.PP
+The ``\-v'' option prints out the current version and exits.
+.SH CAVEATS
+The generated file names are not portable to all systems.
+.PP
+.SH "SEE ALSO"
+makekit(1L).
+.PP
+.SH BUGS
+.I Maniscan
+will complain it cannot open a file to scan it if it finds
+a zero character file.

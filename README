@@ -1,0 +1,104 @@
+
+Introduction
+------------
+This set of tools is designed to make it easier to ship sources around.  I
+wrote them because I do a lot of that as moderator of comp.sources.unix,
+and nothing else did the job for me.  This set isn't perfect, but its
+close enough. :-)
+
+Programs are included for the following tasks:
+    Find source files in a directory tree
+    Run uuencode on binary files, and split up large files
+    Partition files into reasonably-sized archives via a shipping list
+    Pull entries out of shipping lists
+    Make shell archives from shipping lists or named files
+    Strip mail/news headers from archives before feeding them to a shell
+    An interpreter of enough /bin/sh syntax to unpack them "sort of" safely
+
+The sources in this distribution are being released into the public
+domain; do what you want, but let your conscience be your guide.  If you
+somehow enhance this package, please send it on to me so that others can
+benefit.
+
+On a philosophical note, I've tried to make this all as general as
+possible for shipping sources around.  I'm more interested in portability
+than binaries, so things like automatically running uuencode don't
+interest me.
+
+Installation
+------------
+Pick a configuration file that comes close to matching your system, copy
+it to config.h, and edit it as necessary.  Don't edit the distributed
+version because it will be harder to track patches to it.  Don't be scared
+by your first look at all the parameters in the config.XXX files.  I agree
+that there are WAY too many, but it's really not that bad -- trust me.  If
+you find that you have to edit any other file, please let me know.   You
+might have to tweak with some of the lXXX.c files for bizarre systems, but
+if you have to edit anything else then I goofed and I would like to hear
+about it.
+
+It would be nice if I could use a Larry Wall-style Configure, but that
+only works on Unix (and Eunice).  Send me your config.h file so that
+others can benefit.
+
+You might have to edit the Makefile, or perhaps even write one from scratch.
+If you end up making significant changes, please let me know.  Apparently
+"make" and compilers in the micro world don't have the de-facto standards
+the way Unix and VMS do, so unless your changes are very general and
+applicable to a wide variety of machines, you needn't send them to me.
+
+Credits
+-------
+I freely stole ideas from a number of people who have been good enough to
+put their stuff out on Usenet.  Particular thanks to Gary Perlman and
+Larry Wall for giving me something nice to reverse-engineer, Michael
+Mauldin for unshar, and Phil Budne for what I turned into manipull.
+
+More importantly, well over 50 people have sent me comments and bug reports
+on previous versions of this.  The names are too long to list, but this
+code is dedicated to them.
+
+Enjoy!
+	Rich $alz
+	BBN Systems and Technology, Inc.
+	10 Moulton Street
+	Cambridge, MA  02238
+	rsalz@bbn.com
+	rsalz@uunet.uu.net
+
+
+Note from Raphael Manfredi <ram@acri.fr>
+--------------------------------------------
+Please, note that this is not the original distribution of cshar 3.0,
+which you can get directly from Rich Salz. However, I try to maintain
+this code, and, to a certain extent, I apply ('merge' would be a more
+appropriate word) the official patches on my own version.
+
+If you find a bug or have any question, report it to me. As a matter of
+fact, I will probably be the one to blame.
+
+I used Larry Wall's meta-config on this package. Those who run UNIX will
+simply have to run Configure. If it blows up, let me know. Others can
+restore Rich Salz's original Makefile (Makefile.salz) and edit config.h
+by hand. (See leading comment in ramconf.h).
+
+The makefile extracted by Configure will not build the 'shell' program,
+assuming it is not needed on UNIX systems. If you want it built anyway,
+you can edit the generated makefile. Do not edit Makefile.SH, in case
+you have to re-distribute this package.
+
+Once everything is built and installed, you may run a 'make clobber',
+which will restore the minimum configuration for re-distribution.
+
+You can get patches for cshar 3.0 directly from me. I have an automatic
+patch sender. Send me a mail of the following form:
+
+	Subject: Command
+	@SH mailhelp PATH
+
+and you will get instructions about how to use it. PATH stands for
+YOUR e-mail address, either in INTERNET form or in bang notation.
+
+To maintain and configure cshar, I use the dist 3.0 package, as posted
+in comp.sources.misc (August 1993).
+

@@ -1,0 +1,195 @@
+/*
+**  Configuration file for shar and friends.
+**
+**  This config file is for Xenix on a 386 (and 286).
+**  In the Makefile, set DIRLIB=-lx, and tweak the MANDIR and 1 variables.
+**
+**  For a 286, you need '-F 2000' for unshar, and don't forget to use
+** '-M2' in the CFLAGS.
+**
+**  $Id: config.x38,v 3.0.3.4 1993/08/25 17:04:27 ram Exp $
+*/
+
+/*
+
+$Log: config.x38,v $
+Revision 3.0.3.4  1993/08/25  17:04:27  ram
+patch12: cleanup checkin for RCS 5.6
+
+Revision 3.0.3.3  91/04/18  18:38:38  ram
+patch5: removed old log message (prior to 3.0)
+
+Revision 3.0.3.2  91/04/07  18:49:48  ram
+patch1: merged official cshar 3.0 into beta version
+
+Revision 3.0.3.1  91/01/21  11:29:51  ram
+3.0 baseline (ram).
+
+ */
+
+/*
+**  Higher-level controls for which operating system we're running on.
+*/
+#define UNIX				/* Works			*/
+/*efine MSDOS				/* Should work			*/
+/*efine VMS				/* Doesn't work			*/
+
+
+/*
+**  A dense section of one-line compilation controls.  If you're confused,
+**  your best bet is to search through the source to see where and how
+**  each one of these is used.
+*/
+#define IDX		strchr		/* Maybe strchr?		*/
+#define RDX		strrchr		/* Maybe strrchr?		*/
+#define NEED_CTERMID			/* Don't have ctermid(3)?	*/
+#define NEED_MKDIR			/* Don't have mkdir(2)?		*/
+/*efine UNOS_MKDIR			/* Use makedir, not mkdir?	*/
+/*efine NEED_QSORT			/* Don't have qsort(3)?		*/
+/*efine NEED_GETOPT			/* Don't have getopt(3)?	*/
+#define NEED_STRERROR			/* Don't have strerror(3)?	*/
+#define HAVE_SYSTEM			/* Have system(3)?		*/
+#define CAN_POPEN			/* Can invoke file(1) command?	*/
+/*efine USE_MY_SHELL			/* Don't popen("/bin/sh")?	*/
+/*efine void		int		/* If you don't have void	*/
+/*pedef void		 sigret_t;	/* What a signal handler returns */
+typedef int		 sigret_t;	/* What a signal handler returns */
+typedef int		*align_t;	/* Worst-case alignment, for lint */
+/*pedef long		time_t		/* Needed for non-BSD sites?	*/
+/*pedef long		off_t		/* Needed for non-BSD sites?	*/
+/*efine SYS_WAIT			/* Have <sys/wait.h> and vfork?	*/
+/*efine HAS_VFORK			/* Have vfork but no <sys/wait.h> */
+/*efine USE_SYSTEM			/* Use system(3), not exec(2)?	*/
+/*efine USE_LONGJMP			/* Don't exit() within parser?	*/
+#define USE_SYSERRLIST			/* Have sys_errlist[], sys_nerr? */
+#define USE_GETPWUID			/* Use getpwuid(3)?		*/
+#define DEF_SAVEIT	TRUE		/* Save headers by default?	*/
+#define UNIX_FILES			/* stat(file) gives true size?	*/
+#define NAME_FORMAT	"%s%2.2d"	/* To get things like Part02	*/
+/*efine NAME_FORMAT	"%s%02.2d"	/* To get things like Part02	*/
+#define NUMB_FORMAT	"%02d"		/* To get things like 03	*/
+#define MANI_FORMAT	"%-25s %2d\t%s\n"	/* This should be safe	*/
+#define MAX_LEVELS	6		/* Levels for findsrc to walk	*/
+#define THE_TTY		"/dev/tty"	/* Maybe "con:" for MS-DOS?	*/
+#define RCSID				/* Compile in the RCS strings?	*/
+#define USERNAME	"Someone"	/* Your name, if not in environ	*/
+#define PTR_SPRINTF			/* Need extern char *sprinf()?	*/
+/*efine DECLARE_PROTOTYPES		/* Use prototypes in our decls?	*/
+/*efine ANSI_HDRS			/* Use <stdlib.h>, etc.?	*/
+#define REGISTER	register	/* Do you trust your compiler?	*/
+#define PEDAGOGY			/* Advertise tools?		*/
+
+
+/*
+**  How do we test to see if a character is okay to pass to one of
+**  the macros in <ctype.h>?  Note that we never give it EOF.
+*/
+#define CTYPE(c)	(isascii((c)))	/* Common			*/
+/*efine CTYPE(c)	((c) > 0)	/* Less common			*/
+/*efine CTYPE(c)	(TRUE)		/* Uncommon			*/
+
+
+/*
+**  We often want to make a backup copy of a file (usually a manifest).
+**  The following sets of #define's control how the copying is done.
+*/
+/*efine BU_VIA_RENAME			/* Use rename call?		*/
+#define BU_VIA_LINK			/* Use link/unlink calls?	*/
+/*efine BU_VIA_COPY			/* Use fopen() and such?	*/
+/*efine BU_NONE				/* System has generations?	*/
+/*efine BU_PREFIX	"B-"		/* Instead of ".BAK" suffix?	*/
+#define BU_SUFFIX	".BAK"		/* Instead of "B-" prefix?	*/
+#define BU_NAME_LEN	14		/* For non-BSD filesystems	*/
+
+
+/*
+**  The programs create up to two temporary files at one time, using
+**  mktemp(3).  Decide where you want the files to go, and if you wanna
+**  use a special directory for them (see MakeTempName).
+*/
+#define TEMP_NAME1	"/tmp/csharXXXXXX"	/* Unix			*/
+#define TEMP_NAME2	"/tmp/csharXXXXXX"	/* Unix			*/
+/*efine TEMP_NAME1	"csharXXXXXX"		/* MS-DOS		*/
+/*efine TEMP_NAME2	"csharXXXXXX"		/* MS-DOS		*/
+/*efine TEMP_NAME1	"sys$login:csharXXXXXX"	/* VMS			*/
+/*efine TEMP_NAME2	"sys$login:csharXXXXXX"	/* VMS			*/
+#define TEMPSIZE	40		/* Size of temp file name	*/
+/*efine TEMPVAR		"TMPDIR"	/* Place for temp files		*/
+
+
+/*
+**  There are several ways to get the current machine name.  Enable just one
+**  of one of the following lines.
+*/
+/*efine GETHOSTNAME			/* Use gethostname(2) call	*/
+#define UNAME				/* Use uname(2) call		*/
+/*efine UUNAME				/* Invoke "uuname -l"		*/
+/*efine	WHOAMI		"/etc/whoami"	/* Try /etc/whoami & <whoami.h>	*/
+/*efine HOST_STRING			/* Just use DEF_HOST		*/
+#define DEF_HOST	"SITE"		/* If all else fails		*/
+
+
+/*
+**  There are several different ways to get the current working directory.
+**  Enable just one of the following lines.
+*/
+/*efine GETWD				/* Use getwd(3) routine		*/
+#define GETCWD				/* Use getcwd(3) routine	*/
+/*efine PWDPOPEN			/* Invoke "pwd"			*/
+/*efine PWDGETENV	"PWD"		/* Get $PWD from environment	*/
+
+
+/*
+**  If you're a notes site, you might have to tweak these two #define's.
+**  If you don't care, then set them equal to something that doesn't
+**  start with the comment-begin sequence and they'll be effectively no-ops
+**  at the cost of an extra strcmp.  I've also heard of broken MS-DOS
+**  compilers that don't ignore slash-star inside comments!  Anyhow, for
+**  more details see unshar.c
+*/
+/*efine NOTES1		"/* Written "	/* This is what notes 1.7 uses	*/
+/*efine NOTES2		"/* ---"	/* This is what notes 1.7 uses	*/
+#define NOTES1		"$$"		/* This is a don't care		*/
+#define NOTES2		"$$"		/* This is a don't care		*/
+
+
+/*
+**  The findsrc program uses the readdir() routines to read directories.
+**  If your system doesn't have this interface, there are public domain
+**  implementations available for Unix from the comp.sources.unix archives,
+**  GNU has a VMS one inside EMACS, and this package comes with kits for
+**  MS-DOS and the Amiga.  Help save the world and use or write a readdir()
+**  package for your system!
+*/
+
+/* Now then, where did I put that header file?   Pick one. */
+/*efine IN_SYS_DIR			/* <sys/dir.h>			*/
+#define IN_SYS_NDIR			/* <sys/ndir.h>			*/
+/*efine IN_DIR				/* <dir.h>			*/
+/*efine IN_DIRECT			/* <direct.h>			*/
+/*efine IN_NDIR				/* "ndir.h"			*/
+/*efine IN_DIRENT			/* <dirent.h>			*/
+
+/*  What readdir() returns.  Must be a #define because of #include order. */
+#ifdef	IN_DIRENT
+#define DIRENTRY	struct dirent
+#else
+#define DIRENTRY	struct direct
+#endif	/* IN_DIRENT */
+
+
+/*
+**  Limits.  The shell parser can be compiled with some safety-checks.
+**  This includes creating too many files, or writing long ones, creating
+**  too many directories, overwriting existing files, etc.
+*/
+/*efine NAME_CHECK			/* Munge names of files?	*/
+/*efine PATH_CHECK			/* Check filenames in shars?	*/
+/*efine MAX_FOPENS	40		/* Max # of files/archive	*/
+/*efine MAX_LINES	1200		/* Max # of lines in a file	*/
+/*efine MAX_MKDIRS	10		/* Max directory depth		*/
+
+
+/*
+**  Congratulations, you're done!
+*/
